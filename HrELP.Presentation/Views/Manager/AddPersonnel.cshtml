@@ -1,0 +1,717 @@
+﻿@model AddPersonnelDTO
+<body>
+    <main>
+        <!-- Main Page Section -->
+        <div class="new-users">
+            <h2>Add Personnel</h2>
+            <div class="user-list mt-4">
+                <div class="user">
+                    <h2 style="margin-top:15px; margin-left:120px">@Model.FirstName</h2>
+                    <dl class="mt-5">
+                        @if (ViewData["IdentityExists"] != null)
+                        {
+                            <div class="alert alert-danger">
+                                @ViewData["IdentityExists"]
+                            </div>
+                        }
+                        <div id="imageContainer">
+                            <!-- This is where the selected image will be displayed -->
+                        </div>
+                        <form method="post" asp-controller="Manager" asp-action="AddPersonnel" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label asp-for="PhotoFile" class="form-label">Upload A Photo:</label>
+                                <input asp-for="PhotoFile" class="form-control" type="file" id="formFile" accept="image/png,image/jpeg,image/jpg">
+                            </div>
+                            <div class="mb-4 pb-2">
+                                <label class="form-label">Department: </label><br />
+                                <div class="select-wrapper">
+                                    <select asp-for="Department" class="form-control" id="departmanSelect">
+                                        <option value="">Please Select a Department</option>
+                                        @foreach (var item in ViewBag.Departments)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                                    </select>
+                                    <div class="arrow"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4 pb-2">
+                                <label class="form-label" for="form3Examplev4">Position: </label><br />
+                                <div class="select-wrapper">
+                                    <select asp-for="Profession" class="form-control" id="pozisyonSelect">
+                                        <option value="">Please Select a Position</option>   @foreach (var position in ViewBag.Positions)
+                                        {
+                                            <option value="@position">@position</option>
+                                        }
+                                    </select>
+                                    <div class="arrow"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div class="form-outline">
+                                        <label class="form-label" for="form3Examplev2">First name</label>
+                                        <input asp-for="FirstName" type="text" id="form3Examplev2" class="form-control form-control-lg" required /><br />
+
+                                        <div id="myModal" class="modal">
+                                            <div class="modal-content">
+                                                <span class="close">&times;</span>
+                                                <p id="warningMessage">Sadece harf giriniz!</p>
+                                            </div>
+                                        </div>
+                                        <div id="myModal1" class="modal1">
+                                            <div class="modal1-content">
+                                                <span class="close1">&times;</span>
+                                                <p id="warningMessage">Sadece rakam giriniz!</p>
+                                            </div>
+                                        </div>
+                                        <div id="myModal2" class="modal2">
+                                            <div class="modal2-content">
+                                                <span class="close2">&times;</span>
+                                                <p id="warningMessage">TC Kimlik Numarası "0" ile Başlayamaz!</p>
+                                            </div>
+                                        </div>
+                                        <div id="myModal3" class="modal3">
+                                            <div class="modal3-content">
+                                                <span class="close3">&times;</span>
+                                                <p id="warningMessage">TC Kimlik Numarası 11 Haneli Olmalı!</p>
+                                            </div>
+                                        </div>
+                                        <div id="myModal4" class="modal4">
+                                            <div class="modal4-content">
+                                                <span class="close4">&times;</span>
+                                                <p id="warningMessage">Posta Kodu 5 Haneli Olmalı!</p>
+                                            </div>
+                                        </div>
+                                        <div id="myModal5" class="modal5">
+                                            <div class="modal5-content">
+                                                <span class="close5">&times;</span>
+                                                <p id="warningMessage">Posta Kodu 00-82 arasında olmalı!</p>
+                                            </div>
+                                        </div>
+                                        <div id="birthDateErrorModal" class="modal6">
+                                            <div class="modal6-content">
+                                                <span class="close6">&times;</span>
+                                                <p id="birthDateErrorMessage">Geçersiz doğum tarihi! Lütfen doğru bir tarih girin (1950'den büyük ve en az 15 yaşında olmalıdır).</p>
+                                            </div>
+                                        </div>
+                                        <label class="form-label" for="form3Examplev2">Middle Name</label>
+                                        <input asp-for="SecondFirstName" type="text" id="form3Examplev2" class="form-control form-control-lg" />
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div class="form-outline">
+                                        <label class="form-label" for="form3Examplev3">Last Name</label>
+                                        <input asp-for="LastName" type="text" id="form3Examplev3" class="form-control form-control-lg" required /><br />
+
+                                        <label class="form-label" for="form3Examplev3">Secondary Last Name</label>
+                                        <input asp-for="SecondLastName" type="text" id="form3Examplev3" class="form-control form-control-lg" />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-4 pb-2">
+                                    <label class="form-label">Identity Number</label>
+                                    <input asp-for="IdentityNumber" class="form-control" type="text" placeholder="Enter a Identity Number" required />
+
+                                </div>
+                                <div class="col-md-6 mb-4 pb-2">
+                                    <label class="form-label">Birth Place</label>
+                                    <input asp-for="BirthPlace" class="form-control" type="text" placeholder="Birth Place" required />
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4 pb-2">
+                                    <label class="form-label">Birth Date</label>
+                                    <input asp-for="BirthDate" id="BirthDate" class="form-control" type="date" />
+                                </div>
+                                <div class="col-md-6 mb-4 pb-2">
+                                    <label class="form-label">Salary</label>
+                                    <input asp-for="Salary" class="form-control" type="text" placeholder="Salary" value="11400" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4 pb-2">
+                                    <label class="form-label">Marriage Status</label>
+                                    <div class="form-check">
+                                        <input asp-for="MarriageStatus" class="form-check-input" type="radio" value="true" id="marriageStatusMarried" required />
+                                        <label class="form-check-label" for="marriageStatusMarried">Married</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input asp-for="MarriageStatus" class="form-check-input" type="radio" value="false" id="marriageStatusSingle" required />
+                                        <label class="form-check-label" for="marriageStatusSingle">Single</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4 pb-2">
+                                    <label class="form-label">Gender</label>
+                                    <div class="form-check">
+                                        <input asp-for="Gender" class="form-check-input" type="radio" value="Male" id="genderMale" required />
+                                        <label class="form-check-label" for="genderMale">Male</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input asp-for="Gender" class="form-check-input" type="radio" value="Female" id="genderFemale" required />
+                                        <label class="form-check-label" for="genderFemale">Female</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h6 class="mt-3 mb-4">Address</h6>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12 mb-4">
+                                    <label for="Street" class="mb-4">City</label>
+                                    @Html.DropDownListFor(model => model.SelectedCity,
+                                    new SelectList(ViewBag.City, "Value", "Text"),
+                                    "-- Please Select a City --",
+                                    new {@class="form-select", id = "CityDropdown"})
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="Town" class="mb-4">Town</label>
+                                    <select id="TownDropdown" asp-for="SelectedTown" class="form-select mb-4">
+                                        <option value="">--Please Select a Town--</option>
+                                        <option value="@Model.SelectedTown"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="District" class="mb-4">District</label>
+                                    <select id="DistrictDropdown" asp-for="SelectedDistrict" class="form-select mb-4">
+                                        <option value="">--Please Select a District--</option>
+                                        <option value="@Model.SelectedDistrict"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="Quarter" class="mb-4">Quarter</label>
+                                    <select id="QuarterDropdown" asp-for="SelectedQuarter" class="form-select mb-4">
+                                        <option value="">--Please Select a Quarter--</option>
+                                        <option value="@Model.SelectedQuarter"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="fullAddress" class="form-label mb-4">Full Address</label>
+                                    <input asp-for="FullAddress" type="text" class="form-control mb-4" required />
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="zip" class="form-label mb-4">Zip Code</label>
+                                    <input asp-for="ZipCode" type="text" class="form-control mb-4" id="zip" value="00" placeholder="Zip Code" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="phoneNumber" class="form-label mb-4">Phone Number</label>
+                                    <input asp-for="PhoneNumber" type="text" class="form-control mb-4" required />
+                                </div>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <div class="form-group">
+                                    <button type="submit" id="submit" name="submit" class="form-control btn btn-primary btn-rounded">Create a Personnel</button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#form3Examplev2, #form3Examplev3, #form3Examplev4, #BirthPlace").on("input", function () {
+            var regex = /^[a-zA-ZğüşöçıĞÜŞÖÇİ\s]*$/;
+            var inputValue = $(this).val();
+            if (!regex.test(inputValue)) {
+                $(this).val(inputValue.replace(/[^a-zA-ZğüşöçıĞÜŞÖÇİ\s]/g, ''));
+
+                $("#myModal").show();
+            } else {
+
+                $("#myModal").hide();
+            }
+        });
+
+
+        $(".close").click(function () {
+            $("#myModal").hide();
+        });
+    });
+
+    $(document).ready(function () {
+
+        $("#Salary, #zip, #IdentityNumber, #PhoneNumber").on("input", function () {
+            var regex = /^[0-9]*$/;
+            var inputValue = $(this).val();
+            if (!regex.test(inputValue)) {
+                $(this).val(inputValue.replace(/[^0-9]/g, ''));
+
+                $("#myModal1").show();
+            } else {
+
+                $("#myModal1").hide();
+            }
+        });
+
+
+        $(".close1").click(function () {
+            $("#myModal1").hide();
+        });
+    });
+
+    $(document).ready(function () {
+        $("#IdentityNumber").on("input", function () {
+            var inputValue = $(this).val();
+            var isNumeric = /^\d+$/.test(inputValue);
+            var isValidLength = inputValue.length === 11;
+            var doesNotStartWithZero = inputValue.charAt(0) !== '0';
+
+            if (!isNumeric) {
+
+                $("#myModal1").show();
+                $(this).addClass("is-invalid");
+            }
+            else if (!doesNotStartWithZero) {
+
+                $("#myModal2").show();
+                $(this).addClass("is-invalid");
+            }
+            else if (!isValidLength) {
+
+                $("#myModal3").show();
+                $(this).addClass("is-invalid");
+            }
+            else {
+                $("#myModal1, #myModal2, #myModal3").hide();
+                $(this).removeClass("is-invalid");
+            }
+        });
+        $(".close1, .close2, .close3").click(function () {
+            $("#myModal1, #myModal2, #myModal3").hide();
+        });
+
+    });
+
+    $(document).ready(function () {
+        $("#zip").on("input", function () {
+            var inputValue = $(this).val();
+            var isNumeric = /^\d+$/.test(inputValue);
+            var isValidLength = inputValue.length === 5;
+            var firstTwoDigits = inputValue.slice(0, 2);
+            var isInRange = parseInt(firstTwoDigits) >= 0 && parseInt(firstTwoDigits) <= 82;
+
+            if (!isNumeric || !isValidLength || !isInRange) {
+                if (!isNumeric) {
+                    $("#myModal1").show();
+                } else if (!isValidLength) {
+                    $("#myModal4").show();
+                } else if (!isInRange) {
+
+                    $("#myModal5").show();
+                }
+
+                $(this).addClass("is-invalid");
+            } else {
+                $("#myModal1, #myModal4, #myModal5").hide();
+                $(this).removeClass("is-invalid");
+            }
+        });
+
+        $(".close1,.close4,.close5").click(function () {
+            $("#myModal1, #myModal4, #myModal5").hide();
+        });
+    });
+
+    $(document).ready(function () {
+        $("#BirthDate").change(function () {
+            var inputDate = new Date($(this).val());
+            var currentDate = new Date();
+            var minimumAgeDate = new Date();
+            minimumAgeDate.setFullYear(minimumAgeDate.getFullYear() - 15);
+
+            if (inputDate > currentDate || inputDate > minimumAgeDate || (inputDate.getFullYear() < 1950)) {
+                $("#birthDateErrorModal").show();
+                $(this).addClass("is-invalid");
+
+            } else {
+                $("#birthDateErrorModal").hide();
+                $(this).removeClass("is-invalid");
+            }
+        });
+
+        $(".close6").click(function () {
+            $("#birthDateErrorModal").hide();
+        });
+    });
+
+    $(document).ready(function () {
+        $("#CityDropdown").change(function () {
+            var selectedCity = $(this).val();
+            $.ajax({
+                url: "/User/GetTownsForCity",
+                type: "GET",
+                dataType: "json",
+                data: { city: selectedCity },
+                success: function (data) {
+                    $("#TownDropdown").empty();
+                    $.each(data, function (i, town) {
+                        $("#TownDropdown").append('<option value="' + town.value + '">' + town.text + '</option>');
+                    });
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#TownDropdown").change(function () {
+            var selectedTown = $(this).val();
+            var selectedCity = $("#CityDropdown").val();
+            $.ajax({
+                url: "/User/GetDistrictsForTown",
+                type: "GET",
+                dataType: "json",
+                data: { city: selectedCity, town: selectedTown },
+                success: function (data) {
+                    $("#DistrictDropdown").empty();
+                    $.each(data, function (i, district) {
+                        $("#DistrictDropdown").append('<option value="' + district.value + '">' + district.text + '</option>');
+                    });
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#DistrictDropdown").change(function () {
+            var selectedDistrict = $(this).val();
+            var selectedCity = $("#CityDropdown").val();
+            var selectedTown = $("#TownDropdown").val();
+            $.ajax({
+                url: "/User/GetQuartersForDistrict",
+                type: "GET",
+                dataType: "json",
+                data: { city: selectedCity, town: selectedTown, district: selectedDistrict },
+                success: function (data) {
+                    $("#QuarterDropdown").empty();
+                    $.each(data, function (i, quarter) {
+                        $("#QuarterDropdown").append('<option value="' + quarter.value + '">' + quarter.text + '</option>');
+                    });
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+
+        $('#departmanSelect,#pozisyonSelect,#TownDropdown,#DistrictDropdown,#QuarterDropdown').change(function () {
+            if ($(this).val() !== '') {
+                $(this).find('option[value=""]').remove();
+            }
+        });
+    });
+
+    document.getElementById('formFile').addEventListener('change', function (event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function () {
+            var img = document.createElement('img');
+            img.src = reader.result;
+            img.style.maxWidth = '300px'; // Set a maximum width for the displayed image
+            document.getElementById('imageContainer').innerHTML = '';
+            document.getElementById('imageContainer').appendChild(img);
+        }
+
+        reader.readAsDataURL(file);
+    });
+
+</script>
+
+<style>
+
+    #birthDateErrorModal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.4);
+        width: 300px;
+        height: 150px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+        #birthDateErrorModal .modal6-content {
+            background-color: #fefefe;
+            text-align: center;
+            border-radius: 5px;
+            padding: 20px;
+            height: 100%;
+        }
+
+        #birthDateErrorModal .close6 {
+            color: red;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+            #birthDateErrorModal .close6:hover {
+                color: darkred;
+            }
+
+    #myModal5 {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.4);
+        width: 300px;
+        height: 100px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+        #myModal5 .modal5-content {
+            background-color: #fefefe;
+            text-align: center;
+            border-radius: 5px;
+            padding: 20px;
+            height: 100%;
+        }
+
+        #myModal5 .close5 {
+            color: red;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+            #myModal5 .close5:hover {
+                color: darkred;
+            }
+
+    #myModal4 {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.4);
+        width: 300px;
+        height: 100px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+        #myModal4 .modal4-content {
+            background-color: #fefefe;
+            text-align: center;
+            border-radius: 5px;
+            padding: 20px;
+            height: 100%;
+        }
+
+        #myModal4 .close4 {
+            color: red;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+            #myModal4 .close4:hover {
+                color: darkred;
+            }
+
+    #myModal3 {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.4);
+        width: 300px;
+        height: 100px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+        #myModal3 .modal3-content {
+            background-color: #fefefe;
+            text-align: center;
+            border-radius: 5px;
+            padding: 20px;
+            height: 100%;
+        }
+
+        #myModal3 .close3 {
+            color: red;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+            #myModal3 .close3:hover {
+                color: darkred;
+            }
+
+    #myModal2 {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.4);
+        width: 300px;
+        height: 100px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+        #myModal2 .modal2-content {
+            background-color: #fefefe;
+            text-align: center;
+            border-radius: 5px;
+            padding: 20px;
+            height: 100%;
+        }
+
+        #myModal2 .close2 {
+            color: red;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+            #myModal2 .close2:hover {
+                color: darkred;
+            }
+
+
+    #myModal1 {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.4);
+        width: 300px;
+        height: 100px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+        #myModal1 .modal1-content {
+            background-color: #fefefe;
+            text-align: center;
+            border-radius: 5px;
+            padding: 20px;
+            height: 100%;
+        }
+
+        #myModal1 .close1 {
+            color: red;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+            #myModal1 .close1:hover {
+                color: darkred;
+            }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.4);
+        width: 300px;
+        height: 100px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        text-align: center;
+        border-radius: 5px;
+        padding: 20px;
+        height: 100%;
+    }
+
+    .close {
+        color: red;
+        font-size: 24px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+        .close:hover {
+            color: darkred;
+        }
+
+    .select-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .select {
+        width: 100%;
+    }
+
+    .arrow {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 5px solid #000;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+</style>

@@ -1,0 +1,86 @@
+﻿@using HrELP.Application.Models.ViewModels;
+@model IEnumerable<AdvanceRequest>
+
+<body>
+    <main>
+        <div class="new-users text-center">
+            <h2>All Advance Requests</h2>
+            <div class="user-list mt-4">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Advance Type</th>
+                            <th>Request Amount</th>
+                            <th>Currency</th>
+                            <th>Create Date</th>
+                            <th>Response Date</th>
+                            <th>Status</th>
+                            <th>Delete Request</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allTab">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @foreach (var request in Model)
+                            {
+                                @if (request != null)
+                                {
+                                    <tr>
+                                        <td>
+                                            @request.RequestType.RequestName
+                                        </td>
+                                        <td>
+                                            @request.RequestAmount
+                                        </td>
+                                        <td>
+                                            @request.Currency
+                                        </td>
+                                        <td>
+                                            @request.CreateDate
+                                        </td>
+                                        <td>
+                                            @request.ResponseDate
+                                        </td>
+                                        <td>
+                                            @if(@request.ApprovalStatus == ApprovalStatus.Pending_Approval)
+                                            {
+                                                <span class="material-symbols-outlined text-warning">
+                                                    hourglass_top
+                                                </span>
+                                            }
+                                            @if(request.ApprovalStatus == ApprovalStatus.Approved)
+                                            {
+                                                <span class="material-symbols-outlined text-success">
+                                                    check_circle
+                                                </span>
+                                            }
+                                            @if(request.ApprovalStatus == ApprovalStatus.Declined)
+                                            {
+                                                <span class="material-symbols-outlined text-danger">
+                                                    cancel
+                                                </span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if(request.ApprovalStatus == ApprovalStatus.Pending_Approval)
+                                            {
+                                                <a class="btn btn-sm btn-outline-danger" asp-controller="Personnel" asp-action="DeleteAdvanceRequest" asp-route-id="@request.Id">
+                                                    Delete Request
+                                                </a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+
+
